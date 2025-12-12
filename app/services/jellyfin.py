@@ -8,12 +8,13 @@ class JellyfinService:
     def __init__(self):
         self.client = JellyfinClient()
         self.client.config.app('Newslettarr', '0.0.1', 'newslettarr-server', 'newslettarr-id')
-        self.client.config.data["auth.ssl"] = True
 
         if not Config.JELLYFIN_HOST or not Config.JELLYFIN_USERNAME or not Config.JELLYFIN_PASSWORD:
             print("Warning: Jellyfin credentials not fully set in environment.")
             self.connected = False
             return
+
+        self.client.config.data["auth.ssl"] = Config.JELLYFIN_HOST.startswith("https")
 
         try:
             self.client.auth.connect_to_address(Config.JELLYFIN_HOST)
