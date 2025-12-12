@@ -32,4 +32,21 @@ Build and run with Docker Compose:
 docker compose up -d --build
 ```
 
+## Compose
+
+Build and run with the image at quay.io/sigaloid/newslettarr:
+
+```yaml
+version: '3.8'
+services:
+  newslettarr:
+    image: quay.io/sigaloid/newslettarr
+    ports:
+      - "5000:5000"
+    environment:
+      - JELLYFIN_HOST=http://jellyfin:8096
+      - JELLYFIN_USERNAME=admin
+      - JELLYFIN_PASSWORD=password
+```
+
 Newsletters are saved to `./newsletters` (mounted volume, or just rebuild on restart).
