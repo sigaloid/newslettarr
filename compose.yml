@@ -1,0 +1,12 @@
+services:
+  newslettarr:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./newsletters:/app/newsletters
+    env_file:
+      - .env
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped

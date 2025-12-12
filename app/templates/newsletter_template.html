@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ headline }}</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h1.headline {
+            color: #2c3e50;
+            font-size: 24px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .section-header {
+            background-color: #00A4DC;
+            color: white;
+            padding: 10px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .media-item {
+            margin-bottom: 40px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+        .media-content-wrapper {
+            display: flex;
+            gap: 20px;
+        }
+        .media-poster {
+            flex: 0 0 120px;
+        }
+        .media-poster img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .media-info {
+            flex: 1;
+        }
+        .media-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0 0 5px 0;
+        }
+        .media-meta {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .media-genres {
+            font-size: 14px;
+            font-style: italic;
+            color: #888;
+            margin-bottom: 10px;
+        }
+        .media-overview {
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        .trailer-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+            overflow: hidden;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+        .trailer-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #aaa;
+            margin-top: 50px;
+        }
+        @media (max-width: 480px) {
+            .media-content-wrapper {
+                flex-direction: column;
+            }
+            .media-poster {
+                flex: 0 0 auto;
+                max-width: 150px;
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="headline">{{ headline }}</h1>
+        <p style="text-align: center; color: #777;">Newsletter for {{ date_range }}</p>
+
+        {% if movies %}
+        <div class="section-header">Movies</div>
+        {% for item in movies %}
+        <div class="media-item">
+            <div class="media-content-wrapper">
+                {% if item.poster_url %}
+                <div class="media-poster">
+                    <img src="{{ item.poster_url }}" alt="Poster for {{ item.Name }}">
+                </div>
+                {% endif %}
+                <div class="media-info">
+                    <div class="media-title">{{ item.Name }} ({{ item.ProductionYear }})</div>
+                    <div class="media-meta">
+                        ★ {{ item.CommunityRating|default('N/A') }} | 
+                        {% for studio in item.Studios %}
+                            {{ studio.Name }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="media-genres">
+                        {% for genre in item.Genres %}
+                            {{ genre }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="media-overview">{{ item.Overview }}</div>
+                </div>
+            </div>
+            {% if item.trailer_url %}
+            <div class="trailer-container">
+                <iframe src="{{ item.trailer_url }}" allowfullscreen></iframe>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        {% if series %}
+        <div class="section-header">TV Shows</div>
+        {% for item in series %}
+        <div class="media-item">
+            <div class="media-content-wrapper">
+                {% if item.poster_url %}
+                <div class="media-poster">
+                    <img src="{{ item.poster_url }}" alt="Poster for {{ item.Name }}">
+                </div>
+                {% endif %}
+                <div class="media-info">
+                    <div class="media-title">{{ item.Name }} ({{ item.ProductionYear }})</div>
+                    <div class="media-meta">
+                        ★ {{ item.CommunityRating|default('N/A') }} | 
+                        {% for studio in item.Studios %}
+                            {{ studio.Name }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="media-genres">
+                        {% for genre in item.Genres %}
+                            {{ genre }}{% if not loop.last %}, {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="media-overview">{{ item.Overview }}</div>
+                </div>
+            </div>
+            {% if item.trailer_url %}
+            <div class="trailer-container">
+                <iframe src="{{ item.trailer_url }}" allowfullscreen></iframe>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <div class="footer">
+            Generated by Newslettarr
+        </div>
+    </div>
+</body>
+</html>

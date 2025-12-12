@@ -1,0 +1,5 @@
+flask
+jellyfin-apiclient-python
+python-dotenv
+python-dateutil
+requests
